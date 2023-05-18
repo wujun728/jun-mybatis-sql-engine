@@ -21,16 +21,32 @@ public class TestUser {
     }
 
     @Test
-    public void testIf() {
+    public void testSubMap() {
         DynamicSqlEngine engine = new DynamicSqlEngine();
-        String sql = "id &lt;= #{maxId}";
+        String sql = "id &lt;= #{maxId.maxId}";
+        
+        Map<String, Object> submap = new HashMap<>();
+        submap.put("maxId", 10);
         Map<String, Object> map = new HashMap<>();
-        map.put("maxId", 10);
+        map.put("maxId", submap);
+        
 
         SqlMeta sqlMeta = engine.parse(sql, map);
-        System.out.println(sqlMeta.getSql());
+        System.out.println("testSubMap"+sqlMeta.getSql());
         sqlMeta.getJdbcParamValues().forEach(System.out::println);
 
+    }
+    @Test
+    public void testIf() {
+    	DynamicSqlEngine engine = new DynamicSqlEngine();
+    	String sql = "id &lt;= #{maxId}";
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("maxId", 10);
+    	
+    	SqlMeta sqlMeta = engine.parse(sql, map);
+    	System.out.println(sqlMeta.getSql());
+    	sqlMeta.getJdbcParamValues().forEach(System.out::println);
+    	
     }
 
     @Test
